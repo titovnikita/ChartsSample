@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ChartsSample</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="bar_chart_description">Pulse by month</string>
+
+    <!-- BUTTON TEXT -->
+    <string name="line_chart_button">Realtime Line Chart</string>
+    <string name="bar_chart_button">Bar Chart</string>
+
+</resources>
