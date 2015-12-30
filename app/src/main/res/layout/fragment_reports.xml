@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvJobAWeekTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/job_title"
+            android:textStyle="bold" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bcJobAWeek"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/tvJobAWeekTitle" />
+
+        <TextView
+            android:id="@+id/tvOnTimeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bcJobAWeek"
+            android:text="@string/on_time_title"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/llPies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvOnTimeTitle"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pcPickups"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pcPickups"
+                    android:layout_gravity="center"
+                    android:text="@string/pickups" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pcDeliveries"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pcDeliveries"
+                    android:gravity="center"
+                    android:text="@string/pickups" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

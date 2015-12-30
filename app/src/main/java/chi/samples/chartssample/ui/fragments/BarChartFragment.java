@@ -37,7 +37,7 @@ public class BarChartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.bar_chart_layout, container, false);
+        return inflater.inflate(R.layout.fragment_reports, container, false);
     }
 
     @Override

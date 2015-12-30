@@ -7,5 +7,8 @@
     <!-- BUTTON TEXT -->
     <string name="line_chart_button">Realtime Line Chart</string>
     <string name="bar_chart_button">Bar Chart</string>
+    <string name="job_title">Jobs per week</string>
+    <string name="on_time_title">On-time, %</string>
+    <string name="pickups">Pickups</string>
 
 </resources>
