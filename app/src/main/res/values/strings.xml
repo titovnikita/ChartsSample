@@ -10,5 +10,7 @@
     <string name="job_title">Jobs per week</string>
     <string name="on_time_title">On-time, %</string>
     <string name="pickups">Pickups</string>
+    <string name="deliveries">Deliveries</string>
+    <string name="avg_stop_time">Average stop time, hrs</string>
 
 </resources>

@@ -22,11 +22,20 @@
             android:layout_height="200dp"
             android:layout_below="@id/tvJobAWeekTitle" />
 
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/bcJobAWeek"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey_light" />
+
         <TextView
             android:id="@+id/tvOnTimeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/bcJobAWeek"
+            android:layout_below="@id/divider1"
             android:text="@string/on_time_title"
             android:textStyle="bold" />
 
@@ -50,11 +59,13 @@
                     android:layout_height="200dp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/pcPickups"
-                    android:layout_gravity="center"
-                    android:text="@string/pickups" />
+                    android:gravity="center"
+                    android:text="@string/pickups"
+                    android:textAllCaps="true"
+                    android:textColor="@color/blue" />
 
             </RelativeLayout>
 
@@ -67,19 +78,43 @@
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pcDeliveries"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_weight="1" />
+                    android:layout_height="200dp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/pcDeliveries"
                     android:gravity="center"
-                    android:text="@string/pickups" />
+                    android:text="@string/deliveries"
+                    android:textAllCaps="true"
+                    android:textColor="@color/blue" />
 
             </RelativeLayout>
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/llPies"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/grey_light" />
+
+        <TextView
+            android:id="@+id/tvAvgStopTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider2"
+            android:text="@string/avg_stop_time"
+            android:textStyle="bold" />
+
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:id="@+id/hbcAvgStopTime"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/tvAvgStopTime" />
 
     </RelativeLayout>
 </ScrollView>

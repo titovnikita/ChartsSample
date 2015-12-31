@@ -6,4 +6,5 @@
     <color name="dark_blue_shadow">#5D8ED0</color>
     <color name="pink">#D500FA</color>
     <color name="pink_shadow">#E24EFC</color>
+    <color name="grey_light">#C8C8C8 </color>
 </resources>
