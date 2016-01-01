@@ -26,8 +26,8 @@ public class MenuFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.btnLineChart).setOnClickListener(new Clicker());
-        view.findViewById(R.id.btnBarChart).setOnClickListener(new Clicker());
+        view.findViewById(R.id.btnScreen1).setOnClickListener(new Clicker());
+        view.findViewById(R.id.btnScreen2).setOnClickListener(new Clicker());
     }
 
     @Override
@@ -41,8 +41,8 @@ public class MenuFragment extends Fragment {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.btnBarChart:
-                    bridge.getFragmentLauncher().launchBarChartFragment(new BarChartFragment(), true);
+                case R.id.btnScreen1:
+                    bridge.getFragmentLauncher().launchReportsFragment(new ReportsFragment(), true);
                     break;
             }
         }

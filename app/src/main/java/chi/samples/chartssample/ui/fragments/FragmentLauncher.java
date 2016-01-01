@@ -38,7 +38,7 @@ public final class FragmentLauncher {
         launchFragment(fragment, LINE_CHART_FRAGMENT_TAG, addToBackStack);
     }
 
-    public void launchBarChartFragment(final Fragment fragment, final boolean addToBackStack){
+    public void launchReportsFragment(final Fragment fragment, final boolean addToBackStack){
         launchFragment(fragment, BAR_CHART_FRAGMENT_TAG, addToBackStack);
     }
 }
