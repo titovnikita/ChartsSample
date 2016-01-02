@@ -17,8 +17,8 @@ public class DataHelper {
 
     public static ArrayList<GraphItem> getAvgStopData() {
         ArrayList<GraphItem> avgStop = new ArrayList<>();
-        avgStop.add(new GraphItem("Pickup", 86));
         avgStop.add(new GraphItem("Delivery", 107));
+        avgStop.add(new GraphItem("Pickup", 86));
         return avgStop;
     }
 }

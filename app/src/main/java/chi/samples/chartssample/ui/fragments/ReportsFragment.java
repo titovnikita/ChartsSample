@@ -20,12 +20,13 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
 
 import chi.samples.chartssample.R;
 import chi.samples.chartssample.database.models.GraphItem;
+import chi.samples.chartssample.ui.views.TimeAxisFormatter;
+import chi.samples.chartssample.ui.views.TimeValueFormatter;
 import chi.samples.chartssample.utils.DataHelper;
 
 /**
@@ -62,6 +63,36 @@ public class ReportsFragment extends Fragment {
 
         initPickupsChart();
         initDeliveriesChart();
+        initAvgStopTimeChart();
+    }
+
+    private void initAvgStopTimeChart() {
+        YAxis rightAxis = hbcAvgStopTime.getAxisRight();
+        rightAxis.setValueFormatter(new TimeAxisFormatter());
+        rightAxis.setEnabled(true);
+
+        YAxis leftAxis = hbcAvgStopTime.getAxisLeft();
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setEnabled(false);
+
+        XAxis xAxis = hbcAvgStopTime.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextSize(15);
+        xAxis.setDrawGridLines(false);
+
+        hbcAvgStopTime.setDrawBarShadow(false);
+
+        hbcAvgStopTime.setDrawValueAboveBar(true);
+
+        hbcAvgStopTime.setDescription("");
+        hbcAvgStopTime.getLegend().setEnabled(false);
+
+        hbcAvgStopTime.setBackgroundColor(Color.TRANSPARENT);
+        hbcAvgStopTime.setDrawGridBackground(false);
+        hbcAvgStopTime.animateY(1400, Easing.EasingOption.EaseInExpo);
+
+        hbcAvgStopTime.setData(getAvgStopData(DataHelper.getAvgStopData()));
     }
 
     private void initDeliveriesChart() {
@@ -125,7 +156,7 @@ public class ReportsFragment extends Fragment {
         xAxis.setDrawGridLines(false);
 
         bcJobsAWeek.getLegend().setEnabled(false);
-        bcJobsAWeek.setBackgroundColor(Color.WHITE);
+        bcJobsAWeek.setBackgroundColor(Color.TRANSPARENT);
         bcJobsAWeek.setDrawGridBackground(false);
         bcJobsAWeek.setDescription("");
         bcJobsAWeek.animateY(1400, Easing.EasingOption.EaseInBounce);
@@ -139,18 +170,18 @@ public class ReportsFragment extends Fragment {
             xVals.add(items.get(i).description);
         }
 
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
 
         for (int i = 0; i < items.size(); i++) {
-            yVals1.add(new BarEntry(items.get(i).value, i));
+            yVals.add(new BarEntry(items.get(i).value, i));
         }
 
-        BarDataSet set1 = new BarDataSet(yVals1, getString(R.string.job_title));
-        set1.setBarSpacePercent(35f);
-        set1.setColor(getResources().getColor(R.color.blue));
+        BarDataSet set = new BarDataSet(yVals, getString(R.string.job_title));
+        set.setBarSpacePercent(35f);
+        set.setColor(getResources().getColor(R.color.blue));
 
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
-        dataSets.add(set1);
+        dataSets.add(set);
 
         BarData data = new BarData(xVals, dataSets);
         data.setValueTextSize(10f);
@@ -179,5 +210,30 @@ public class ReportsFragment extends Fragment {
         dataSet.setColors(colors);
 
         return new PieData(xVals, dataSet);
+    }
+
+    public BarData getAvgStopData(ArrayList<GraphItem> items) {
+        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
+
+        for (int i = 0; i < items.size(); i++) {
+            xVals.add(items.get(i).description);
+            yVals.add(new BarEntry(items.get(i).value, i));
+        }
+
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.dark_blue));
+        colors.add(getResources().getColor(R.color.pink));
+
+        BarDataSet set = new BarDataSet(yVals, "Average stop time");
+        set.setBarSpacePercent(35f);
+        set.setColors(colors);
+        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+        dataSets.add(set);
+
+        BarData data = new BarData(xVals, dataSets);
+        data.setValueTextSize(10f);
+        data.setValueFormatter(new TimeValueFormatter());
+        return data;
     }
 }
