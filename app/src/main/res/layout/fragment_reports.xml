@@ -15,8 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/job_title"
-            android:textSize="19sp"
             android:textColor="@android:color/black"
+            android:textSize="19sp"
             android:textStyle="bold" />
 
         <com.github.mikephil.charting.charts.BarChart
@@ -40,8 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/divider1"
             android:text="@string/on_time_title"
-            android:textSize="19sp"
             android:textColor="@android:color/black"
+            android:textSize="19sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -113,8 +113,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/divider2"
             android:text="@string/avg_stop_time"
-            android:textSize="19sp"
             android:textColor="@android:color/black"
+            android:textSize="19sp"
             android:textStyle="bold" />
 
         <com.github.mikephil.charting.charts.HorizontalBarChart
