@@ -1,7 +1,5 @@
 package chi.samples.chartssample.ui.fragments;
 
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -18,6 +17,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 
 import java.util.ArrayList;
 
@@ -49,10 +52,64 @@ public class ReportsFragment extends Fragment {
         pcDeliveries = (PieChart) view.findViewById(R.id.pcDeliveries);
         hbcAvgStopTime = (HorizontalBarChart) view.findViewById(R.id.hbcAvgStopTime);
 
+        initGraphs();
     }
 
     private void initGraphs() {
         initJobsAWeekGraph();
+        initPieChart(pcPickups);
+        initPieChart(pcDeliveries);
+
+        initPickupsChart();
+        initDeliveriesChart();
+    }
+
+    private void initDeliveriesChart() {
+        pcDeliveries.setCenterText("73%");
+        pcDeliveries.setCenterTextColor(getResources().getColor(R.color.pink));
+        pcDeliveries.setCenterTextSize(25);
+        pcDeliveries.getLegend().setEnabled(false);
+        pcDeliveries.setRotationEnabled(false);
+        pcDeliveries.setRotationAngle(-90);
+
+        pcDeliveries.setData(getPieData(73, R.color.pink));
+    }
+
+    private void initPickupsChart() {
+        pcPickups.setCenterText("68%");
+        pcPickups.setCenterTextColor(getResources().getColor(R.color.dark_blue));
+        pcPickups.setCenterTextSize(25);
+        pcPickups.getLegend().setEnabled(false);
+        pcPickups.setRotationEnabled(false);
+        pcPickups.setRotationAngle(-90);
+
+        pcPickups.setData(getPieData(68, R.color.dark_blue));
+    }
+
+    private void initPieChart(PieChart chart) {
+        chart.setUsePercentValues(true);
+        chart.setDescription("");
+        chart.setExtraOffsets(5, 10, 5, 5);
+
+        chart.setDragDecelerationFrictionCoef(0.95f);
+
+        chart.setDrawHoleEnabled(true);
+        chart.setHoleColorTransparent(true);
+
+        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setTransparentCircleAlpha(110);
+
+        chart.setHoleRadius(58f);
+        chart.setTransparentCircleRadius(61f);
+
+        chart.setDrawCenterText(true);
+
+        chart.setRotationAngle(0);
+
+        chart.setRotationEnabled(true);
+        chart.setHighlightPerTapEnabled(true);
+
+        chart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
     }
 
     private void initJobsAWeekGraph() {
@@ -71,6 +128,7 @@ public class ReportsFragment extends Fragment {
         bcJobsAWeek.setBackgroundColor(Color.WHITE);
         bcJobsAWeek.setDrawGridBackground(false);
         bcJobsAWeek.setDescription("");
+        bcJobsAWeek.animateY(1400, Easing.EasingOption.EaseInBounce);
         bcJobsAWeek.setData(getJobsGraphData(DataHelper.getJobsPerWeekData()));
     }
 
@@ -98,5 +156,28 @@ public class ReportsFragment extends Fragment {
         data.setValueTextSize(10f);
 
         return data;
+    }
+
+    public PieData getPieData(int value, int accentColorResId) {
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+
+        yVals1.add(new Entry(value, 0));
+        yVals1.add(new Entry(100 - value, 1));
+
+        ArrayList<String> xVals = new ArrayList<String>();
+        xVals.add("");
+        xVals.add("");
+
+        PieDataSet dataSet = new PieDataSet(yVals1, "On-time");
+        dataSet.setSliceSpace(2f);
+        dataSet.setDrawValues(false);
+
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(accentColorResId));
+        colors.add(getResources().getColor(R.color.grey_light));
+
+        dataSet.setColors(colors);
+
+        return new PieData(xVals, dataSet);
     }
 }
