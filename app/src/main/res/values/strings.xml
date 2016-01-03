@@ -16,5 +16,7 @@
     <string name="pickups_value">68%</string>
     <string name="details">Details</string>
     <string name="header_title">55% GPS utilization</string>
+    <string name="on_time_per_week">On-time per week, %</string>
+    <string name="on_time_per_location">On-time per location, %</string>
 
 </resources>
