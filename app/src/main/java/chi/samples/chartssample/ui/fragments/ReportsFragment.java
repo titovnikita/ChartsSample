@@ -25,8 +25,9 @@ import java.util.ArrayList;
 
 import chi.samples.chartssample.R;
 import chi.samples.chartssample.database.models.GraphItem;
-import chi.samples.chartssample.ui.views.TimeAxisFormatter;
-import chi.samples.chartssample.ui.views.TimeValueFormatter;
+import chi.samples.chartssample.ui.views.formatters.IntegerValueFormatter;
+import chi.samples.chartssample.ui.views.formatters.TimeAxisFormatter;
+import chi.samples.chartssample.ui.views.formatters.TimeValueFormatter;
 import chi.samples.chartssample.utils.DataHelper;
 
 /**
@@ -34,6 +35,11 @@ import chi.samples.chartssample.utils.DataHelper;
  */
 public class ReportsFragment extends Fragment {
     private final String TAG = getClass().getSimpleName();
+    private final int ANIMATION_DURATION = 1400;
+    private final int CENTER_TEXT_SIZE = 25;
+    private final int PIE_CHART_ROTATION_ANGLE = -90;
+    private final float BAR_SPACE_PERCENT = 35f;
+    private final float DEFAULT_TEXT_SIZE = 10f;
 
     private BarChart bcJobsAWeek;
     private PieChart pcPickups, pcDeliveries;
@@ -78,10 +84,13 @@ public class ReportsFragment extends Fragment {
 
         XAxis xAxis = hbcAvgStopTime.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextSize(15);
+        xAxis.setTextSize(13);
         xAxis.setDrawGridLines(false);
 
         hbcAvgStopTime.setDrawBarShadow(false);
+        hbcAvgStopTime.setPinchZoom(false);
+        hbcAvgStopTime.setDoubleTapToZoomEnabled(false);
+        hbcAvgStopTime.setScaleEnabled(false);
 
         hbcAvgStopTime.setDrawValueAboveBar(true);
 
@@ -90,29 +99,32 @@ public class ReportsFragment extends Fragment {
 
         hbcAvgStopTime.setBackgroundColor(Color.TRANSPARENT);
         hbcAvgStopTime.setDrawGridBackground(false);
-        hbcAvgStopTime.animateY(1400, Easing.EasingOption.EaseInExpo);
+        hbcAvgStopTime.setHighlightPerTapEnabled(false);
+        hbcAvgStopTime.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseInExpo);
 
         hbcAvgStopTime.setData(getAvgStopData(DataHelper.getAvgStopData()));
     }
 
     private void initDeliveriesChart() {
-        pcDeliveries.setCenterText("73%");
+        pcDeliveries.setCenterText(getString(R.string.deliveries_value));
         pcDeliveries.setCenterTextColor(getResources().getColor(R.color.pink));
-        pcDeliveries.setCenterTextSize(25);
+        pcDeliveries.setCenterTextSize(CENTER_TEXT_SIZE);
         pcDeliveries.getLegend().setEnabled(false);
         pcDeliveries.setRotationEnabled(false);
-        pcDeliveries.setRotationAngle(-90);
+        pcDeliveries.setRotationAngle(PIE_CHART_ROTATION_ANGLE);
+        pcDeliveries.setClickable(false);
 
         pcDeliveries.setData(getPieData(73, R.color.pink));
     }
 
     private void initPickupsChart() {
-        pcPickups.setCenterText("68%");
+        pcPickups.setCenterText(getString(R.string.pickups_value));
         pcPickups.setCenterTextColor(getResources().getColor(R.color.dark_blue));
-        pcPickups.setCenterTextSize(25);
+        pcPickups.setCenterTextSize(CENTER_TEXT_SIZE);
         pcPickups.getLegend().setEnabled(false);
         pcPickups.setRotationEnabled(false);
-        pcPickups.setRotationAngle(-90);
+        pcPickups.setRotationAngle(PIE_CHART_ROTATION_ANGLE);
+        pcPickups.setClickable(false);
 
         pcPickups.setData(getPieData(68, R.color.dark_blue));
     }
@@ -138,9 +150,10 @@ public class ReportsFragment extends Fragment {
         chart.setRotationAngle(0);
 
         chart.setRotationEnabled(true);
-        chart.setHighlightPerTapEnabled(true);
+        chart.setHighlightPerTapEnabled(false);
 
-        chart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+
+        chart.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseInOutQuad);
     }
 
     private void initJobsAWeekGraph() {
@@ -156,10 +169,15 @@ public class ReportsFragment extends Fragment {
         xAxis.setDrawGridLines(false);
 
         bcJobsAWeek.getLegend().setEnabled(false);
+        bcJobsAWeek.setPinchZoom(false);
+        bcJobsAWeek.setDoubleTapToZoomEnabled(false);
+        bcJobsAWeek.setHighlightPerTapEnabled(false);
+        bcJobsAWeek.setScaleEnabled(false);
+
         bcJobsAWeek.setBackgroundColor(Color.TRANSPARENT);
         bcJobsAWeek.setDrawGridBackground(false);
         bcJobsAWeek.setDescription("");
-        bcJobsAWeek.animateY(1400, Easing.EasingOption.EaseInBounce);
+        bcJobsAWeek.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseInBounce);
         bcJobsAWeek.setData(getJobsGraphData(DataHelper.getJobsPerWeekData()));
     }
 
@@ -177,14 +195,15 @@ public class ReportsFragment extends Fragment {
         }
 
         BarDataSet set = new BarDataSet(yVals, getString(R.string.job_title));
-        set.setBarSpacePercent(35f);
+        set.setBarSpacePercent(BAR_SPACE_PERCENT);
         set.setColor(getResources().getColor(R.color.blue));
 
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set);
 
         BarData data = new BarData(xVals, dataSets);
-        data.setValueTextSize(10f);
+        data.setValueTextSize(DEFAULT_TEXT_SIZE);
+        data.setValueFormatter(new IntegerValueFormatter());
 
         return data;
     }
@@ -226,13 +245,13 @@ public class ReportsFragment extends Fragment {
         colors.add(getResources().getColor(R.color.pink));
 
         BarDataSet set = new BarDataSet(yVals, "Average stop time");
-        set.setBarSpacePercent(35f);
+        set.setBarSpacePercent(BAR_SPACE_PERCENT);
         set.setColors(colors);
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set);
 
         BarData data = new BarData(xVals, dataSets);
-        data.setValueTextSize(10f);
+        data.setValueTextSize(12);
         data.setValueFormatter(new TimeValueFormatter());
         return data;
     }

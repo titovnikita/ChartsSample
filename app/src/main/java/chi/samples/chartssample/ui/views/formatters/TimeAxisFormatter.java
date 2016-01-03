@@ -1,14 +1,17 @@
-package chi.samples.chartssample.ui.views;
+package chi.samples.chartssample.ui.views.formatters;
 
 import android.text.format.DateUtils;
 
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.formatter.YAxisValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
-public class TimeValueFormatter implements ValueFormatter {
+public class TimeAxisFormatter implements YAxisValueFormatter {
+
     @Override
-    public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+    public String getFormattedValue(float value, YAxis yAxis) {
         return DateUtils.formatElapsedTime(new Float(value).longValue());
     }
 }

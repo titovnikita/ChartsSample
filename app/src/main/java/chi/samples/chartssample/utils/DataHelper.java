@@ -8,10 +8,10 @@ public class DataHelper {
 
     public static ArrayList<GraphItem> getJobsPerWeekData() {
         ArrayList<GraphItem> jobsPerWeek = new ArrayList<>();
-        jobsPerWeek.add(new GraphItem("Dec 1 - 7", 18));
-        jobsPerWeek.add(new GraphItem("Dec 8 - 14", 4));
-        jobsPerWeek.add(new GraphItem("Dec 15 - 21", 7));
-        jobsPerWeek.add(new GraphItem("Dec 22 - 28", 11));
+        jobsPerWeek.add(new GraphItem("Dec 1", 18));
+        jobsPerWeek.add(new GraphItem("Dec 8", 4));
+        jobsPerWeek.add(new GraphItem("Dec 15", 7));
+        jobsPerWeek.add(new GraphItem("Dec 22", 11));
         return jobsPerWeek;
     }
 

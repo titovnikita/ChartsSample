@@ -12,5 +12,9 @@
     <string name="pickups">Pickups</string>
     <string name="deliveries">Deliveries</string>
     <string name="avg_stop_time">Average stop time, hrs</string>
+    <string name="deliveries_value">73%</string>
+    <string name="pickups_value">68%</string>
+    <string name="details">Details</string>
+    <string name="header_title">55% GPS utilization</string>
 
 </resources>
