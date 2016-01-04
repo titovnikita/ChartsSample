@@ -18,5 +18,7 @@
     <string name="header_title">55% GPS utilization</string>
     <string name="on_time_per_week">On-time per week, %</string>
     <string name="on_time_per_location">On-time per location, %</string>
+    <string name="btn_screen3">Screen 3</string>
+    <string name="gps_utilization">GPS Utilization</string>
 
 </resources>

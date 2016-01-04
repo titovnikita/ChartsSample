@@ -90,6 +90,7 @@ public class ReportsFragment extends Fragment {
         hbcAvgStopTime.setDrawBarShadow(false);
         hbcAvgStopTime.setPinchZoom(false);
         hbcAvgStopTime.setDoubleTapToZoomEnabled(false);
+        hbcAvgStopTime.setHighlightPerDragEnabled(false);
         hbcAvgStopTime.setScaleEnabled(false);
 
         hbcAvgStopTime.setDrawValueAboveBar(true);
@@ -171,6 +172,7 @@ public class ReportsFragment extends Fragment {
         bcJobsAWeek.getLegend().setEnabled(false);
         bcJobsAWeek.setPinchZoom(false);
         bcJobsAWeek.setDoubleTapToZoomEnabled(false);
+        bcJobsAWeek.setHighlightPerDragEnabled(false);
         bcJobsAWeek.setHighlightPerTapEnabled(false);
         bcJobsAWeek.setScaleEnabled(false);
 

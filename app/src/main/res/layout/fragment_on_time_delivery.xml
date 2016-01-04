@@ -14,25 +14,24 @@
             android:id="@+id/tvOnTimePerWeek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/divider0"
             android:text="@string/on_time_per_week"
             android:textColor="@android:color/black"
             android:textSize="19sp"
             android:textStyle="bold" />
 
         <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/bcJobAWeek"
+            android:id="@+id/bcOnTimePerWeek"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_below="@id/tvJobAWeekTitle" />
+            android:layout_below="@id/tvOnTimePerWeek" />
 
         <View
             android:id="@+id/divider1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/bcJobAWeek"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_below="@id/bcOnTimePerWeek"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
             android:background="@color/grey_light" />
 
         <TextView
@@ -40,16 +39,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/divider1"
+            android:layout_marginBottom="15dp"
             android:text="@string/on_time_per_location"
             android:textColor="@android:color/black"
             android:textSize="19sp"
             android:textStyle="bold" />
 
-        <com.github.mikephil.charting.charts.HorizontalBarChart
-            android:id="@+id/hbcAvgStopTime"
+        <chi.samples.chartssample.ui.views.formatters.charts.FloatingHorizontalBarChart
+            android:id="@+id/hbcOnTimePerLocation"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tvOnTimePerLocation" />
+            android:layout_height="400dp"
+            android:layout_below="@id/tvOnTimePerLocation"
+            android:layout_marginBottom="20dp" />
 
     </RelativeLayout>
 </ScrollView>

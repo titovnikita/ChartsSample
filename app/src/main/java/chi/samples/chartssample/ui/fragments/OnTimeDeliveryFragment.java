@@ -10,24 +10,18 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
 
 import java.util.ArrayList;
 
 import chi.samples.chartssample.R;
 import chi.samples.chartssample.database.models.GraphItem;
-import chi.samples.chartssample.ui.views.formatters.IntegerValueFormatter;
-import chi.samples.chartssample.ui.views.formatters.TimeAxisFormatter;
-import chi.samples.chartssample.ui.views.formatters.TimeValueFormatter;
+import chi.samples.chartssample.ui.views.formatters.PercentIntegerValueFormatter;
+import chi.samples.chartssample.ui.views.formatters.charts.FloatingHorizontalBarChart;
 import chi.samples.chartssample.utils.DataHelper;
 
 /**
@@ -36,152 +30,96 @@ import chi.samples.chartssample.utils.DataHelper;
 public class OnTimeDeliveryFragment extends Fragment {
     private final String TAG = getClass().getSimpleName();
     private final int ANIMATION_DURATION = 1400;
-    private final int CENTER_TEXT_SIZE = 25;
-    private final int PIE_CHART_ROTATION_ANGLE = -90;
+    private final float BAR_SPACE = 60f;
     private final float BAR_SPACE_PERCENT = 35f;
     private final float DEFAULT_TEXT_SIZE = 10f;
 
-    private BarChart bcJobsAWeek;
-    private PieChart pcPickups, pcDeliveries;
-    private HorizontalBarChart hbcAvgStopTime;
+    private BarChart bcOnTimePerWeek;
+    private FloatingHorizontalBarChart hbcOnTimePerLocation;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_reports, container, false);
+        return inflater.inflate(R.layout.fragment_on_time_delivery, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bcJobsAWeek = (BarChart) view.findViewById(R.id.bcJobAWeek);
-        pcPickups = (PieChart) view.findViewById(R.id.pcPickups);
-        pcDeliveries = (PieChart) view.findViewById(R.id.pcDeliveries);
-        hbcAvgStopTime = (HorizontalBarChart) view.findViewById(R.id.hbcAvgStopTime);
+        bcOnTimePerWeek = (BarChart) view.findViewById(R.id.bcOnTimePerWeek);
+        hbcOnTimePerLocation = (FloatingHorizontalBarChart) view.findViewById(R.id.hbcOnTimePerLocation);
 
         initGraphs();
     }
 
     private void initGraphs() {
-        initJobsAWeekGraph();
-        initPieChart(pcPickups);
-        initPieChart(pcDeliveries);
+        initOnTimePerWeekChart();
 
-        initPickupsChart();
-        initDeliveriesChart();
-        initAvgStopTimeChart();
+        initOnTimePerLocationChart();
     }
 
-    private void initAvgStopTimeChart() {
-        YAxis rightAxis = hbcAvgStopTime.getAxisRight();
-        rightAxis.setValueFormatter(new TimeAxisFormatter());
+    private void initOnTimePerWeekChart() {
+        YAxis rightAxis = bcOnTimePerWeek.getAxisRight();
+        rightAxis.setEnabled(false);
+
+        YAxis leftAxis = bcOnTimePerWeek.getAxisLeft();
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setAxisMaxValue(100);
+
+        XAxis xAxis = bcOnTimePerWeek.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        bcOnTimePerWeek.getLegend().setEnabled(false);
+        bcOnTimePerWeek.setPinchZoom(false);
+        bcOnTimePerWeek.setDoubleTapToZoomEnabled(false);
+        bcOnTimePerWeek.setHighlightPerTapEnabled(false);
+        bcOnTimePerWeek.setHighlightPerDragEnabled(false);
+        bcOnTimePerWeek.setScaleEnabled(false);
+
+        bcOnTimePerWeek.setBackgroundColor(Color.TRANSPARENT);
+        bcOnTimePerWeek.setDrawGridBackground(false);
+        bcOnTimePerWeek.setDescription("");
+        bcOnTimePerWeek.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseInCirc);
+        bcOnTimePerWeek.setData(getOnTimePerWeekData(DataHelper.getOnTimePerWeekData()));
+    }
+
+
+    private void initOnTimePerLocationChart() {
+        YAxis rightAxis = hbcOnTimePerLocation.getAxisRight();
+        rightAxis.setAxisMaxValue(100);
         rightAxis.setEnabled(true);
 
-        YAxis leftAxis = hbcAvgStopTime.getAxisLeft();
+        YAxis leftAxis = hbcOnTimePerLocation.getAxisLeft();
         leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         leftAxis.setDrawGridLines(true);
-        leftAxis.setEnabled(false);
+        leftAxis.setAxisMaxValue(100);
 
-        XAxis xAxis = hbcAvgStopTime.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        XAxis xAxis = hbcOnTimePerLocation.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
         xAxis.setTextSize(13);
         xAxis.setDrawGridLines(false);
 
-        hbcAvgStopTime.setDrawBarShadow(false);
-        hbcAvgStopTime.setPinchZoom(false);
-        hbcAvgStopTime.setDoubleTapToZoomEnabled(false);
-        hbcAvgStopTime.setScaleEnabled(false);
+        hbcOnTimePerLocation.setDrawBarShadow(false);
+        hbcOnTimePerLocation.setPinchZoom(false);
+        hbcOnTimePerLocation.setDoubleTapToZoomEnabled(false);
+        hbcOnTimePerLocation.setHighlightPerDragEnabled(false);
+        hbcOnTimePerLocation.setScaleEnabled(false);
 
-        hbcAvgStopTime.setDrawValueAboveBar(true);
+        hbcOnTimePerLocation.setDrawValueAboveBar(false);
 
-        hbcAvgStopTime.setDescription("");
-        hbcAvgStopTime.getLegend().setEnabled(false);
+        hbcOnTimePerLocation.setDescription("");
+        hbcOnTimePerLocation.getLegend().setEnabled(false);
 
-        hbcAvgStopTime.setBackgroundColor(Color.TRANSPARENT);
-        hbcAvgStopTime.setDrawGridBackground(false);
-        hbcAvgStopTime.setHighlightPerTapEnabled(false);
-        hbcAvgStopTime.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseInExpo);
+        hbcOnTimePerLocation.setBackgroundColor(Color.TRANSPARENT);
+        hbcOnTimePerLocation.setDrawGridBackground(false);
+        hbcOnTimePerLocation.setHighlightPerTapEnabled(false);
+        hbcOnTimePerLocation.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseInExpo);
 
-        hbcAvgStopTime.setData(getAvgStopData(DataHelper.getAvgStopData()));
+        hbcOnTimePerLocation.setData(getOnTimePerLocationData(DataHelper.getOnTimeByLocationData()));
     }
 
-    private void initDeliveriesChart() {
-        pcDeliveries.setCenterText(getString(R.string.deliveries_value));
-        pcDeliveries.setCenterTextColor(getResources().getColor(R.color.pink));
-        pcDeliveries.setCenterTextSize(CENTER_TEXT_SIZE);
-        pcDeliveries.getLegend().setEnabled(false);
-        pcDeliveries.setRotationEnabled(false);
-        pcDeliveries.setRotationAngle(PIE_CHART_ROTATION_ANGLE);
-        pcDeliveries.setClickable(false);
-
-        pcDeliveries.setData(getPieData(73, R.color.pink));
-    }
-
-    private void initPickupsChart() {
-        pcPickups.setCenterText(getString(R.string.pickups_value));
-        pcPickups.setCenterTextColor(getResources().getColor(R.color.dark_blue));
-        pcPickups.setCenterTextSize(CENTER_TEXT_SIZE);
-        pcPickups.getLegend().setEnabled(false);
-        pcPickups.setRotationEnabled(false);
-        pcPickups.setRotationAngle(PIE_CHART_ROTATION_ANGLE);
-        pcPickups.setClickable(false);
-
-        pcPickups.setData(getPieData(68, R.color.dark_blue));
-    }
-
-    private void initPieChart(PieChart chart) {
-        chart.setUsePercentValues(true);
-        chart.setDescription("");
-        chart.setExtraOffsets(5, 10, 5, 5);
-
-        chart.setDragDecelerationFrictionCoef(0.95f);
-
-        chart.setDrawHoleEnabled(true);
-        chart.setHoleColorTransparent(true);
-
-        chart.setTransparentCircleColor(Color.WHITE);
-        chart.setTransparentCircleAlpha(110);
-
-        chart.setHoleRadius(58f);
-        chart.setTransparentCircleRadius(61f);
-
-        chart.setDrawCenterText(true);
-
-        chart.setRotationAngle(0);
-
-        chart.setRotationEnabled(true);
-        chart.setHighlightPerTapEnabled(false);
-
-
-        chart.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseInOutQuad);
-    }
-
-    private void initJobsAWeekGraph() {
-        YAxis rightAxis = bcJobsAWeek.getAxisRight();
-        rightAxis.setEnabled(false);
-
-        YAxis leftAxis = bcJobsAWeek.getAxisLeft();
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setAxisMaxValue(25);
-
-        XAxis xAxis = bcJobsAWeek.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-
-        bcJobsAWeek.getLegend().setEnabled(false);
-        bcJobsAWeek.setPinchZoom(false);
-        bcJobsAWeek.setDoubleTapToZoomEnabled(false);
-        bcJobsAWeek.setHighlightPerTapEnabled(false);
-        bcJobsAWeek.setScaleEnabled(false);
-
-        bcJobsAWeek.setBackgroundColor(Color.TRANSPARENT);
-        bcJobsAWeek.setDrawGridBackground(false);
-        bcJobsAWeek.setDescription("");
-        bcJobsAWeek.animateY(ANIMATION_DURATION, Easing.EasingOption.EaseInBounce);
-        bcJobsAWeek.setData(getJobsGraphData(DataHelper.getJobsPerWeekData()));
-    }
-
-    private BarData getJobsGraphData(ArrayList<GraphItem> items) {
+    private BarData getOnTimePerWeekData(ArrayList<GraphItem> items) {
 
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < items.size(); i++) {
@@ -196,42 +134,19 @@ public class OnTimeDeliveryFragment extends Fragment {
 
         BarDataSet set = new BarDataSet(yVals, getString(R.string.job_title));
         set.setBarSpacePercent(BAR_SPACE_PERCENT);
-        set.setColor(getResources().getColor(R.color.blue));
+        set.setColor(getResources().getColor(R.color.pink));
 
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set);
 
         BarData data = new BarData(xVals, dataSets);
         data.setValueTextSize(DEFAULT_TEXT_SIZE);
-        data.setValueFormatter(new IntegerValueFormatter());
+        data.setValueFormatter(new PercentIntegerValueFormatter());
 
         return data;
     }
 
-    public PieData getPieData(int value, int accentColorResId) {
-        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
-
-        yVals1.add(new Entry(value, 0));
-        yVals1.add(new Entry(100 - value, 1));
-
-        ArrayList<String> xVals = new ArrayList<String>();
-        xVals.add("");
-        xVals.add("");
-
-        PieDataSet dataSet = new PieDataSet(yVals1, "On-time");
-        dataSet.setSliceSpace(2f);
-        dataSet.setDrawValues(false);
-
-        ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(accentColorResId));
-        colors.add(getResources().getColor(R.color.grey_light));
-
-        dataSet.setColors(colors);
-
-        return new PieData(xVals, dataSet);
-    }
-
-    public BarData getAvgStopData(ArrayList<GraphItem> items) {
+    public BarData getOnTimePerLocationData(ArrayList<GraphItem> items) {
         ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
 
@@ -240,19 +155,17 @@ public class OnTimeDeliveryFragment extends Fragment {
             yVals.add(new BarEntry(items.get(i).value, i));
         }
 
-        ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(getResources().getColor(R.color.dark_blue));
-        colors.add(getResources().getColor(R.color.pink));
-
         BarDataSet set = new BarDataSet(yVals, "Average stop time");
-        set.setBarSpacePercent(BAR_SPACE_PERCENT);
-        set.setColors(colors);
+        set.setBarSpacePercent(BAR_SPACE);
+        set.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        set.setColor(getResources().getColor(R.color.pink));
         ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
         dataSets.add(set);
 
         BarData data = new BarData(xVals, dataSets);
         data.setValueTextSize(12);
-        data.setValueFormatter(new TimeValueFormatter());
+        data.setValueTextColor(Color.WHITE);
+        data.setValueFormatter(new PercentIntegerValueFormatter());
         return data;
     }
 }

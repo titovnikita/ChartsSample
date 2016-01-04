@@ -28,6 +28,7 @@ public class MenuFragment extends Fragment {
 
         view.findViewById(R.id.btnScreen1).setOnClickListener(new Clicker());
         view.findViewById(R.id.btnScreen2).setOnClickListener(new Clicker());
+        view.findViewById(R.id.btnScreen3).setOnClickListener(new Clicker());
     }
 
     @Override
@@ -43,6 +44,12 @@ public class MenuFragment extends Fragment {
             switch (view.getId()) {
                 case R.id.btnScreen1:
                     bridge.getFragmentLauncher().launchReportsFragment(new ReportsFragment(), true);
+                    break;
+                case R.id.btnScreen2:
+                    bridge.getFragmentLauncher().launchOnTimeDeliveryFragment(new OnTimeDeliveryFragment(), true);
+                    break;
+                case R.id.btnScreen3:
+                    bridge.getFragmentLauncher().launchGpsUtilizationFragment(new GpsUtilizationFragment(), true);
                     break;
             }
         }
